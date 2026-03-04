@@ -1,0 +1,34 @@
+[
+    {
+        "role": "user",
+        "content": "Hello"
+    },
+    {
+        "role": "assistant",
+        "content": "Hello Riyansh."
+    },
+    {
+        "role": "user",
+        "content": "Yo what's up"
+    },
+    {
+        "role": "assistant",
+        "content": "Not much, Riyansh."
+    },
+    {
+        "role": "user",
+        "content": "you free tomorrow?"
+    },
+    {
+        "role": "assistant",
+        "content": "I'm a chatbot, I don't have a physical presence or schedule, so I'm always available to chat."
+    },
+    {
+        "role": "user",
+        "content": "no like i was practicing of flirting"
+    },
+    {
+        "role": "assistant",
+        "content": "In that case, I'm afraid I won't be able to meet you in person."
+    }
+]
