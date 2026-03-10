@@ -61,7 +61,7 @@ async def generate_images(prompt: str):
     clean_prompt = prompt.replace(" ", "_")
     tasks = []
 
-    for _ in range(4):
+    for _ in range(1):
         payload = {"inputs": f"{prompt}, 4k, ultra detailed, high resolution, seed={randint(0,1000000)}"}
         tasks.append(asyncio.create_task(query(payload)))
 
