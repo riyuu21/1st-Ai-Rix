@@ -114,4 +114,121 @@ class ChatSection(QWidget):
         font.setPointSize(13)
         self.chat_text_edit.setFont(font)
         self.timer = QTimer(self)
+        self.timer.timeout.connect(self.loadMessages)
+        self.timer.timeout.connect(self.SpeechRecogText)
+        self.timer.start(5)
+        self.chat_text_edit.viewport().installEventFilter(self)
+        self.setStyleSheet(""" 
+                           QScrollBar: vertical { 
+                           border: none;
+                           background: black;
+                           width: 10px;
+                           margin: 0px 0px 0px 0px;
+                           }
+
+                           QScrollBar::handle:vertical { 
+                           background: white;
+                           min-height: 20px;
+                           }
+
+                           QScrollBar::add-line:vertical { 
+                           background: black;
+                           subcontrol-position: bottom;
+                           subcontrol-origin: margin;
+                           height: 10px;
+                           }
+
+                           QScrollBar::sub-line:vertical { 
+                           background: black;
+                           subcontrol-position: top;
+                           subcontrol-origin: margin;
+                           height: 10px;
+                           }
+
+                           QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical { 
+                           border: none;
+                           background: none;
+                           color: none;
+                           }
+
+                           QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical{ 
+                           background: none;
+                           }
+                           """)
         
+    def loadMessages(self):
+
+        global old_chat_message
+
+        with open(TempDirectoryPath('Responses.data'), "r", encoding='utf-8') as file:
+            messages = file.read()
+
+            if None==messages:
+                pass
+
+            elif len(messages)<=1:
+                pass
+
+            elif str(old_chat_message)==str(messages):
+                pass
+
+            else:
+                self.addMessage(message=messages,color='white')
+                old_chat_message = messages
+
+    def SpeechRecogText(self):
+        with open(TempDirectoryPath('Status.data'), "r", encoding='utf-8') as file:
+            messages = file.read()
+            self.label.setText(messages)
+
+    def load_icon(self, path, width-60, height-60):
+        pixmap = QPixmap(path)
+        new_pixmap = pixmap.scaled(width, height)
+        self.icon_label.setPixmap(new_pixmap)
+
+    def toggle_icon(self, even-None):
+
+        if self.toggled:
+            self.load_icon(GraphicsDirectoryPath('voice.png'), 60, 60)
+            MicButtonInitialed()
+
+        else:
+            self.load_icon(GraphicsDirectoryPath('mic.png'), 60, 60)
+            MicButtonClosed()
+
+        self.toggled = not self.toggled
+
+    def addMessage(self, message, color):
+        cursor = self.chat_text_edit.textCursor()
+        format = QTextCharFormat()
+        formatm = QTextBlockFormat()
+        formatm.setTopMargin(10)
+        formatm.setLeftMargin(10)
+        format.setForeground(QColor(color))
+        cursor.setCharFormat(format)
+        cursor.setBlockFormat(formatm)
+        cursor.insertText(message + "\n")
+        self.chat_text_edit.setTextCursor(cursor)
+
+class InitialScreen(QWidget):
+
+    def __init__(self, parent-None):
+        super().__init__(parent)
+        desktop = QApplication.desktop()
+        screen_width = desktop.screenGeometry().width()
+        screen_height = desktop.screenGeometry.height()
+        content_layout = QVBoxLayout()
+        content_layout.setContentsMargins(0, 0, 0, 0)
+        gif_label = QLabel()
+        movie = QMovie(GraphicsDirectoryPath('Rix.gif'))
+        gif_label.setMovie(movie)
+        max_gif_size_H = int(screen_width / 16 * 9)
+        movie.setScaledSize(QSize(screen_width, max_gif_size_H))
+        gif_label.setAlignment(Qt.AlignCenter)
+        movie.start()
+        gif_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.icon_label = QLabel()
+        pixmap = QPixmap(GraphicsDirectoryPath('Mic_on.png'))
+        new_pixmap = pixmap.scaled(60, 60)
+        self.icon_label.setPixmap(new_pixmap)      
+
